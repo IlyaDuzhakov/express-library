@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Добавить книгу</title>
+</head>
+<body>
+  <h1>Добавить книгу</h1>
+
+  <form action="/books/create" method="POST" enctype="multipart/form-data">
+
+    <div>
+      <label>
+        Название:
+        <input type="text" name="title" required>
+      </label>
+    </div>
+
+    <div>
+      <label>
+        Автор:
+        <input type="text" name="author" required>
+      </label>
+    </div>
+
+    <div>
+      <label>
+        Избранное:
+        <select name="favorite">
+          <option value="false">Нет</option>
+          <option value="true">Да</option>
+        </select>
+      </label>
+    </div>
+
+    <div>
+      <label>
+        Файл:
+        <input type="file" name="fileBook">
+      </label>
+    </div>
+
+    <button type="submit">Добавить книгу</button>
+  </form>
+</body>
+</html>

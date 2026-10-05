@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Библиотека</title>
+</head>
+<body>
+
+  <h1>Список книг</h1>
+
+  <a href="/books/create">Добавить книгу</a>
+
+  <% books.forEach((book) => { %>
+    <h2>
+      <a href="/books/<%= book.id %>">
+        <%= book.title %>
+      </a>
+    </h2>
+  <% }) %>
+
+</body>
+</html>

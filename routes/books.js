@@ -5,20 +5,30 @@ const router = express.Router();
 const books = [];
 let nextId = 1;
 
+function createBook(data, filePath = "") {
+  const newBook = {
+    id: String(nextId),
+    ...data,
+    favorite: data.favorite === "true",
+    fileBook: filePath,
+  };
+
+  books.push(newBook);
+  nextId++;
+
+  return newBook;
+}
+
 router.get("/", (req, res) => {
   res.json(books);
 });
 
 router.post("/", upload.single("fileBook"), (req, res) => {
-  const newBook = {
-    id: String(nextId),
-    ...req.body,
-    favorite: req.body.favorite === "true",
-    fileBook: req.file ? req.file.path : "",
-  };
+  const newBook = createBook(
+    req.body,
+    req.file ? req.file.path : ""
+  );
 
-  books.push(newBook);
-  nextId++;
   res.json(newBook);
 });
 
@@ -79,4 +89,8 @@ router.get("/:id/download", (req, res) => {
   }
 });
 
-module.exports = router;
+module.exports = {
+  router,
+  books,
+  createBook,
+};
