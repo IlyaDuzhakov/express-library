@@ -1,0 +1,26 @@
+$ docker pull node:15.14
+15.14: Pulling from library/node
+Digest: sha256:608bba799613b1ebf754034ae008849ba51e88b23271412427b76d60ae0d0627
+Status: Downloaded newer image for node:15.14
+docker.io/library/node:15.14
+
+$ docker run -it --name mynode -e NAME=Илья -e SURNAME=Дужаков node:15.14
+Welcome to Node.js v15.14.0.
+Type ".help" for more information.
+> console.log(`Привет, ${process.env.NAME} ${process.env.SURNAME}!`)
+Привет, Илья Дужаков!
+undefined
+> .exit
+
+$ docker ps -a --filter name=mynode
+CONTAINER ID   IMAGE        COMMAND                  CREATED              STATUS                      PORTS     NAMES
+ac3cf8f52b36   node:15.14   "docker-entrypoint.s…"   About a minute ago   Exited (0) 32 seconds ago             mynode
+
+$ docker rm mynode
+mynode
+
+$ docker image rm node:15.14
+Untagged: node:15.14
+Untagged: node@sha256:608bba799613b1ebf754034ae008849ba51e88b23271412427b76d60ae0d0627
+Deleted: sha256:c9b1cc6b53791ec5df6210b2d454d12b7a2f181f0a6b0e8f1210c8386473eba7
+# Остальные строки удаления слоёв сокращены.

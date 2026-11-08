@@ -1,0 +1,49 @@
+Задание 3. Volumes
+
+# Команды выполняются из папки express-library/docker-2-4.
+
+$ mkdir -p data
+
+$ docker pull node:15.14
+15.14: Pulling from library/node
+Digest: sha256:608bba799613b1ebf754034ae008849ba51e88b23271412427b76d60ae0d0627
+Status: Image is up to date for node:15.14
+docker.io/library/node:15.14
+
+$ docker run -d --name first_node --mount "type=bind,source=$PWD/data,target=/var/first/data" node:15.14 sleep infinity
+# ID созданного контейнера не сохранён.
+
+$ docker run -d --name second_node --mount "type=bind,source=$PWD/data,target=/var/second/data" node:15.14 sleep infinity
+# ID созданного контейнера не сохранён.
+
+$ docker exec first_node sh -c 'echo "Hello from first_node" > /var/first/data/from-container.txt'
+
+$ echo "Hello from Mac" > data/from-host.txt
+
+$ docker exec second_node ls -l /var/second/data
+total 8
+-rw-r--r-- 1 root root 22 Nov  8 06:38 from-container.txt
+-rw-r--r-- 1 root root 15 Nov  8 06:38 from-host.txt
+
+$ docker exec second_node cat /var/second/data/from-container.txt /var/second/data/from-host.txt
+Hello from first_node
+Hello from Mac
+
+$ docker stop first_node second_node
+first_node
+second_node
+
+$ docker rm first_node second_node
+first_node
+second_node
+
+$ docker image rm node:15.14
+Untagged: node:15.14
+Untagged: node@sha256:608bba799613b1ebf754034ae008849ba51e88b23271412427b76d60ae0d0627
+Deleted: sha256:c9b1cc6b53791ec5df6210b2d454d12b7a2f181f0a6b0e8f1210c8386473eba7
+# Остальные строки удаления слоёв сокращены.
+
+# Вывод
+# Оба контейнера подключены к одной папке data на Mac.
+# Через second_node прочитаны оба файла — созданный через first_node
+# и созданный на Mac.
